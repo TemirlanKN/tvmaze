@@ -12,8 +12,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+//import java.lang.invoke.TypeDescriptor;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 /*
     Simple java class imports data from api.tvmaze.com and shows in localhost:8080/movie
@@ -48,4 +50,24 @@ public class TvSeriesResource {
         List<Episode> episodes = episodeProxy.get(tvSerie.getId());
         return Response.ok(episodes).build();
     }
+
+    @GET
+    @Path("/insert")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String get2(@QueryParam("title") String title) throws SQLException, ClassNotFoundException {
+        TvSerie tvSerie = tvSeriesProxy.get(title);
+        String username = "root";
+        String password = "Qwertypoloasd321!";
+        String connectionUrl = "jdbc:mysql://localhost:3306/movie";
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        try(Connection connection = DriverManager.getConnection(connectionUrl, username, password);
+            Statement statement = connection.createStatement()){
+            //String table_name = "movies";
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS movies (id MEDIUMINT NOT NULL AUTO_INCREMENT, name CHAR(30) NOT NULL, PRIMARY KEY(id))");
+            statement.executeUpdate("insert into movies (name) select '" + title + "' from dual where not exists(select * from movies where name='" + title + "')");
+            System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+        }
+        return "inserted " + title ;
+    }
+
 }
