@@ -6,10 +6,7 @@ import org.gs1.model.TvSerie;
 import org.gs1.proxy.EpisodeProxy;
 import org.gs1.proxy.TvSeriesProxy;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 //import java.lang.invoke.TypeDescriptor;
@@ -17,12 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 /*
     Simple java class imports data from api.tvmaze.com and shows in localhost:8080/movie
  */
 
 @Path("/movie")
+@Configuration
+@PropertySource("classpath:application.properties")
 public class TvSeriesResource {
+
+    //@Value("${SqlUsername}")
+    private String username = "root";
+    private String password = "Qwertypoloasd321!";
+    private String connectionUrl = "jdbc:mysql://localhost:3306/movie";
 
     @RestClient
     TvSeriesProxy tvSeriesProxy;
@@ -54,11 +61,7 @@ public class TvSeriesResource {
     @GET
     @Path("/insert")
     @Produces(MediaType.TEXT_PLAIN)
-    public String get2(@QueryParam("title") String title) throws SQLException, ClassNotFoundException {
-        TvSerie tvSerie = tvSeriesProxy.get(title);
-        String username = "root";
-        String password = "Qwertypoloasd321!";
-        String connectionUrl = "jdbc:mysql://localhost:3306/movie";
+    public String postSql(@QueryParam("title") String title) throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         try(Connection connection = DriverManager.getConnection(connectionUrl, username, password);
             Statement statement = connection.createStatement()){
@@ -68,6 +71,14 @@ public class TvSeriesResource {
             System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
         }
         return "inserted " + title ;
+    }
+
+    @GET
+    @Path("/get")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get2() {
+//        TvSerie tvSerie = tvSeriesProxy.get(title);
+        return Response.ok(tvSeries).build();
     }
 
 }

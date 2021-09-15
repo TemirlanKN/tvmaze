@@ -9,6 +9,7 @@ import java.util.List;
 
 @Path("/shows")
 @Produces(MediaType.APPLICATION_JSON)
+@RegisterRestClient
 public interface EpisodeProxy {
 
     @GET
