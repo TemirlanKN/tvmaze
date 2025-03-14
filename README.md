@@ -1,65 +1,129 @@
-# quarkus-rest-client-tvmaze1 Project
+# TVMaze API Client
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A RESTful web service built with Quarkus that integrates with the TVMaze API to manage TV series information and store it in a PostgreSQL database.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## 🚀 Features
 
-## Running the application in dev mode
+- Fetch TV series information from TVMaze API
+- Store TV series data in PostgreSQL database
+- RESTful API endpoints for CRUD operations
+- Swagger/OpenAPI documentation
+- Database persistence with Spring JDBC
 
-You can run your application in dev mode that enables live coding using:
+## 🛠️ Technologies
 
-```shell script
+- **Backend Framework**: Quarkus 2.2.2.Final
+- **Language**: Java 11
+- **Database**: PostgreSQL
+- **API Integration**: REST Client
+- **Documentation**: OpenAPI/Swagger
+- **Database Access**: Spring JDBC Template
+- **Build Tool**: Maven
+
+## 📌 API Endpoints
+
+| Method | Endpoint                   | Description                     |
+| ------ | -------------------------- | ------------------------------- |
+| GET    | `/tv-maze/movie/show`      | Get movie information by title  |
+| GET    | `/tv-maze/series/show`     | Get series information by title |
+| GET    | `/tv-maze/database`        | List all stored movies          |
+| POST   | `/tv-maze/database/insert` | Add new movie to database       |
+| DELETE | `/tv-maze/database`        | Delete movie by title           |
+
+## 🚦 Prerequisites
+
+- JDK 11+
+- Maven 3.8+
+- PostgreSQL
+- Docker (optional)
+
+## ⚙️ Configuration
+
+### Database Configuration
+
+```properties
+org.gs1.proxy.TvSeriesProxy/mp-rest/uri=http://api.tvmaze.com/
+org.gs1.proxy.TvSeriesProxy/mp-rest/scope=javax.inject.Singleton
+
+SqlUsername=postgres
+SqlPassword=12345
+SqlConnectionUrl=jdbc:postgresql://localhost:5432/postgres
+```
+
+## 🏃‍♂️ Running the Application
+
+### Development Mode
+
+```bash
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+Access Dev UI at: http://localhost:8080/q/dev/
 
-## Packaging and running the application
+### Production Mode
 
-The application can be packaged using:
-
-```shell script
+```bash
 ./mvnw package
+java -jar target/quarkus-app/quarkus-run.jar
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory. Be aware that it’s not an _über-jar_ as
-the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### Native Executable
 
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
+```bash
 ./mvnw package -Pnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+## 🐳 Docker Support
 
-```shell script
+Build native image:
+
+```bash
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/quarkus-rest-client-tvmaze1-1.0-SNAPSHOT-runner`
+## 📚 Project Structure
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html
-.
+```
+src/
+├── main/
+    ├── java/org/gs1/
+    │   ├── model/
+    │   │   ├── Episode.java
+    │   │   └── TvSerie.java
+    │   ├── proxy/
+    │   │   ├── EpisodeProxy.java
+    │   │   └── TvSeriesProxy.java
+    │   └── TvSeriesResource.java
+    └── resources/
+        ├── application.properties
+        └── META-INF/resources/
+            └── index.html
+```
 
-## Related Guides
+## 🧪 Testing
 
-- RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
+Run tests:
 
-## Provided Code
+```bash
+./mvnw test
+```
 
-### RESTEasy JAX-RS
+## 📖 API Documentation
 
-Easily start your RESTful Web Services
+Access Swagger UI at: http://localhost:8080/q/swagger-ui/
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+## 👥 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
+
+## 📄 License
+
+[Add License Information]
+
+## 📬 Contact
+
+[Add Contact Information]
